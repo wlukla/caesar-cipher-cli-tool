@@ -1,4 +1,10 @@
 const { program } = require('commander');
+const chalk = require('chalk');
+
+const caesar = require('./caesar');
+
+const log = console.log;
+const warning = chalk.yellow;
 
 program
   .storeOptionsAsProperties(false)
@@ -8,13 +14,24 @@ program
   .option('-o, --output <output file path>', 'an output file')
   .parse(process.argv)
 
-console.log('Starting Cesar...');
+log(chalk.bold('Starting Cesar...'));
 
 program.parse(process.argv);
 
 const programOpts = program.opts();
 
-if (programOpts.shift) console.log('shifted ', programOpts.shift);
-if (programOpts.action) console.log('action');
-if (programOpts.input) console.log('input');
-if (programOpts.output) console.log('output');
+if (!programOpts.input) {
+  log(
+    chalk.rgb(0, 0, 0).bgYellowBright.bold(' Warning! '),
+    'No input file specified. Using stdin input file.\n\nTo add your input file, use',
+    chalk.white.bgBlackBright.bold(' -i <input file path> ')
+  );
+}
+if (!programOpts.output) {
+  log(
+    chalk.rgb(0, 0, 0).bgYellowBright.bold(' Warning! '),
+    'No input file specified. Using stdin input file.\n\nTo add your input file, use',
+    chalk.white.bgBlackBright.bold(' -i <input file path> ')
+  );
+
+};
