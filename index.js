@@ -3,9 +3,10 @@ const { program } = require('commander');
 program
   .storeOptionsAsProperties(false)
   .requiredOption('-s, --shift <shift size>', 'a shift')
-  .option('-a, --action <encode|decode>', 'an action encode/decode')
+  .requiredOption('-a, --action <encode|decode>', 'an action encode/decode')
   .option('-i, --input <input file path>', 'an input file')
-  .option('-o, --output <output file path>', 'an output file');
+  .option('-o, --output <output file path>', 'an output file')
+  .parse(process.argv)
 
 console.log('Starting Cesar...');
 
