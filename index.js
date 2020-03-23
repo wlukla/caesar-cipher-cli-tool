@@ -38,6 +38,8 @@ let outputText;
 
 switch (programOpts.action) {
   case 'encode':
+    console.log('encoding')
+    console.log(programOpts.shift, ': ', typeof programOpts.shift)
     outputText = caesar.encode(inputText, programOpts.shift);
     break;
   case 'decode':
@@ -45,6 +47,6 @@ switch (programOpts.action) {
     break;
 }
 
-fs.writeFileSync('stdout.txt', outputText, 'utf8');
-
 console.log(outputText);
+
+fs.writeFileSync('stdout.txt', outputText, 'utf8');
