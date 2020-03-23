@@ -1,10 +1,10 @@
+const fs = require('fs');
 const { program } = require('commander');
 const chalk = require('chalk');
 
 const caesar = require('./caesar');
 
 const log = console.log;
-const warning = chalk.yellow;
 
 program
   .storeOptionsAsProperties(false)
@@ -14,24 +14,37 @@ program
   .option('-o, --output <output file path>', 'an output file')
   .parse(process.argv)
 
-log(chalk.bold('Starting Cesar...'));
-
 program.parse(process.argv);
 
 const programOpts = program.opts();
 
 if (!programOpts.input) {
   log(
-    chalk.rgb(0, 0, 0).bgYellowBright.bold(' Warning! '),
-    'No input file specified. Using stdin input file.\n\nTo add your input file, use',
-    chalk.white.bgBlackBright.bold(' -i <input file path> ')
+    chalk.rgb(0, 0, 0).bgYellowBright.bold(' WARNING '),
+    'No input file specified. Using stdin input file.\nTo add your input file, use ',
+    chalk.white.bgBlackBright.bold(' -i <input file path> '), '\n'
   );
 }
 if (!programOpts.output) {
   log(
-    chalk.rgb(0, 0, 0).bgYellowBright.bold(' Warning! '),
-    'No input file specified. Using stdin input file.\n\nTo add your input file, use',
-    chalk.white.bgBlackBright.bold(' -i <input file path> ')
+    chalk.rgb(0, 0, 0).bgYellowBright.bold(' WARNING '),
+    'No input file specified. Using stdout input file.\nTo add your input file, use',
+    chalk.white.bgBlackBright.bold(' -i <input file path> '), '\n'
   );
-
 };
+
+let inputText = fs.readFileSync('./stdin.txt', 'utf-8');
+let outputText;
+
+switch (programOpts.action) {
+  case 'encode':
+    outputText = caesar.encode(inputText, programOpts.shift);
+    break;
+  case 'decode':
+    outputText = caesar.decode(inputText, programOpts.shift);
+    break;
+}
+
+fs.writeFileSync('stdout.txt', outputText, 'utf8');
+
+console.log(outputText);
