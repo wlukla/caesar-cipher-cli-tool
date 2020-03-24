@@ -1,4 +1,5 @@
 const fs = require('fs');
+const stream = require('stream');
 const { program } = require('commander');
 const chalk = require('chalk');
 
@@ -33,20 +34,58 @@ if (!programOpts.output) {
   );
 };
 
-let inputText = fs.readFileSync('./stdin.txt', 'utf-8');
-let outputText;
+// let inputText = programOpts.input
+//   ? fs.readFileSync(programOpts.input, 'utf8', (err) => {
+//     throw new Error(err);
+//   })
+//   : fs.readFileSync('./stdin.txt', 'utf-8');
+// let outputText;
 
-switch (programOpts.action) {
-  case 'encode':
-    console.log('encoding')
-    console.log(programOpts.shift, ': ', typeof programOpts.shift)
-    outputText = caesar.encode(inputText, programOpts.shift);
-    break;
-  case 'decode':
-    outputText = caesar.decode(inputText, programOpts.shift);
-    break;
+// switch (programOpts.action) {
+//   case 'encode':
+//     console.log('encoding')
+//     console.log(programOpts.shift, ': ', typeof programOpts.shift)
+//     outputText = caesar.encode(inputText, programOpts.shift);
+//     break;
+//   case 'decode':
+//     outputText = caesar.decode(inputText, programOpts.shift);
+//     break;
+// }
+
+const Transform = stream.Transform;
+
+class processInput extends Transform {
+  constructor() {
+    super()
+  }
+
+  _transform(chunk, enc, done) {
+    let processedData;
+
+    switch (programOpts.action) {
+      case 'encode':
+        console.log('encode');
+        processedData = caesar.encode(chunk.toString('utf-8'), programOpts.shift);
+      case 'decode':
+        processedData = caesar.decode(chunk.toString('utf-8'), programOpts.shift);
+    }
+
+    this.push(processedData);
+    done();
+  }
 }
 
-console.log(outputText);
 
-fs.writeFileSync('stdout.txt', outputText, 'utf8');
+
+
+// fs.writeFileSync(programOpts.output || 'stdout.txt', outputText, 'utf8');
+
+fs.createReadStream(programOpts.input || 'stdin.txt')
+  .pipe(new processInput())
+  .pipe(fs.createWriteStream(programOpts.output || 'stdout.txt'))
+
+// log(chalk.bold('Type your input:'));
+// const a = process.stdin.on('readable', () => {
+//   let input = String(process.stdin.read());
+//   return input;
+// })

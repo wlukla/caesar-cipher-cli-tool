@@ -5,7 +5,6 @@ const encode = (text, shift) => {
   for (let i = 0; i < text.length; i += 1) {
     if (/[a-zA-Z]/.test(text[i])) {
       if (text[i].toUpperCase() === text[i]) {
-        console.log(text.charCodeAt(i));
         res += String.fromCharCode((text.charCodeAt(i) + key - 65) % 26 + 65);
       } else {
         res += String.fromCharCode((text.charCodeAt(i) + key - 97) % 26 + 97);
@@ -27,7 +26,7 @@ const decode = (text, shift) => {
       if (text[i].toUpperCase() === text[i]) {
         res += String.fromCharCode((text.charCodeAt(i) - key - 65) % 26 + 65);
       } else {
-        res += String.fromCharCode((text.charCodeAt(i) - key - 97) % 26 + 97);
+        res += String.fromCharCode(Math.abs(text.charCodeAt(i) - key - 97) % 26 + 97);
       }
     } else {
       res += text[i];
