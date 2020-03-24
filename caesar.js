@@ -18,7 +18,7 @@ const encode = (text, shift) => {
 }
 
 const decode = (text, shift) => {
-  const newShift = (26 - shift) % 26;
+  const newShift = (26 - Number(shift)) % 26;
   const res = encode(text, newShift);
   return res;
 };
