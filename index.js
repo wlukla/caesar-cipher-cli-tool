@@ -29,9 +29,8 @@ if (!programOpts.input) {
 if (!programOpts.output) {
   log(
     chalk.rgb(0, 0, 0).bgYellowBright.bold(' WARNING '),
-    'No output file specified. Using stdout.\nTo add your input file, use',
+    'No output file specified. Using stdout.\nTo add your output file, use',
     chalk.white.bgBlackBright.bold(' -i <input file path> '), '\n',
-    log(chalk.bold('Your output:\n'))
   );
 };
 
@@ -42,7 +41,7 @@ class processInput extends Transform {
     super()
   }
 
-  _transform(chunk, enc, done) {
+  _transform(chunk) {
     let processedData;
 
     switch (programOpts.action) {
@@ -58,7 +57,7 @@ class processInput extends Transform {
     }
 
     this.push(processedData);
-    done();
+    process.exit();
   }
 }
 
@@ -77,4 +76,4 @@ stream.pipeline(
       console.log('Pipeline succeeded.');
     }
   }
-);
+)
