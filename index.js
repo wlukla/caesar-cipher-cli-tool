@@ -19,38 +19,27 @@ program.parse(process.argv);
 
 const programOpts = program.opts();
 
+let input = programOpts.input;
+
 if (!programOpts.input) {
   log(
     chalk.rgb(0, 0, 0).bgYellowBright.bold(' WARNING '),
-    'No input file specified. Using stdin input file.\nTo add your input file, use ',
-    chalk.white.bgBlackBright.bold(' -i <input file path> '), '\n'
+    'No input file specified. Using stdin.\nTo add your input file, use ',
+    chalk.white.bgBlackBright.bold(' -i <input file path> '), '\n',
+    log(chalk.bold('Type your input:\n'))
   );
+  process.stdin.on('readable', () => {
+    input = String(process.stdin.read());
+  })
 }
 if (!programOpts.output) {
   log(
     chalk.rgb(0, 0, 0).bgYellowBright.bold(' WARNING '),
-    'No input file specified. Using stdout input file.\nTo add your input file, use',
-    chalk.white.bgBlackBright.bold(' -i <input file path> '), '\n'
+    'No input file specified. Using stdout.\nTo add your input file, use',
+    chalk.white.bgBlackBright.bold(' -i <input file path> '), '\n',
+    log(chalk.bold('Your output:\n'))
   );
 };
-
-// let inputText = programOpts.input
-//   ? fs.readFileSync(programOpts.input, 'utf8', (err) => {
-//     throw new Error(err);
-//   })
-//   : fs.readFileSync('./stdin.txt', 'utf-8');
-// let outputText;
-
-// switch (programOpts.action) {
-//   case 'encode':
-//     console.log('encoding')
-//     console.log(programOpts.shift, ': ', typeof programOpts.shift)
-//     outputText = caesar.encode(inputText, programOpts.shift);
-//     break;
-//   case 'decode':
-//     outputText = caesar.decode(inputText, programOpts.shift);
-//     break;
-// }
 
 const Transform = stream.Transform;
 
@@ -75,17 +64,14 @@ class processInput extends Transform {
   }
 }
 
+if (!programOpts.input) {}
 
-
-
-// fs.writeFileSync(programOpts.output || 'stdout.txt', outputText, 'utf8');
-
-fs.createReadStream(programOpts.input || 'stdin.txt')
+(programOpts.input
+  ? fs.createReadStream(programOpts.input)
+  : process.stdin)
   .pipe(new processInput())
-  .pipe(fs.createWriteStream(programOpts.output || 'stdout.txt'))
-
-// log(chalk.bold('Type your input:'));
-// const a = process.stdin.on('readable', () => {
-//   let input = String(process.stdin.read());
-//   return input;
-// })
+  .pipe(
+    programOpts.output
+      ? fs.createWriteStream(programOpts.output)
+      : process.stdout
+    )
