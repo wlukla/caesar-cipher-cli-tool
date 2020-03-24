@@ -1,5 +1,6 @@
 const fs = require('fs');
 const stream = require('stream');
+const path = require('path');
 const { program } = require('commander');
 const chalk = require('chalk');
 
@@ -30,7 +31,7 @@ if (!programOpts.output) {
   log(
     chalk.rgb(0, 0, 0).bgYellowBright.bold(' WARNING '),
     'No output file specified. Using stdout.\nTo add your output file, use',
-    chalk.white.bgBlackBright.bold(' -i <input file path> '), '\n',
+    chalk.white.bgBlackBright.bold(' -o <output file path> '), '\n',
   );
 };
 
@@ -61,17 +62,37 @@ class processInput extends Transform {
   }
 }
 
+const createReadStream = (pathStr) => {
+  if (fs.existsSync(pathStr)) {
+    return fs.createReadStream(pathStr);
+  } else if (!pathStr) {
+    return process.stdin;
+  }
+
+  process.stderr.write(chalk.rgb(0, 0, 0).bgRed.bold(' ERROR '));
+  process.stderr.write(' Input file doesn\'t exist. Check if file path is correct.\n');
+  process.exit(-1);
+}
+
+const createWriteStream = (pathStr) => {
+  if (fs.existsSync(pathStr)) {
+    return fs.createWriteStream(pathStr);
+  } else if (!pathStr) {
+    return process.stdout;
+  }
+
+  process.stderr.write(chalk.rgb(0, 0, 0).bgRed.bold(' ERROR '));
+  process.stderr.write(' Output file doesn\'t exist. Check if file path is correct.\n');
+  process.exit(-1);
+}
+
 stream.pipeline(
-  programOpts.input
-    ? fs.createReadStream(programOpts.input)
-    : process.stdin,
+  createReadStream(programOpts.input),
   new processInput(),
-  programOpts.output
-    ? fs.createWriteStream(programOpts.output)
-    : process.stdout,
+  createWriteStream(programOpts.output),
   (err) => {
     if (err) {
-      console.error('Pipeline failed.', err);
+      console.log(err);
     } else {
       console.log('Pipeline succeeded.');
     }
