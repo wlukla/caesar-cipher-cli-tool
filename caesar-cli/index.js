@@ -103,10 +103,14 @@ if (!programOpts.output) {
   );
 };
 
+const readStream = createReadStream(programOpts.input);
+const transformStream = createTransformStream(programOpts.action, programOpts.shift);
+const writeStream = createWriteStream(programOpts.output)
+
 pipeline(
-  createReadStream(programOpts.input),
-  createTransformStream(programOpts.action, programOpts.shift),
-  createWriteStream(programOpts.output),
+  readStream,
+  transformStream,
+  writeStream,
   (err) => {
     if (err) {
       console.log(err);
