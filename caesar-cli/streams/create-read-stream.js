@@ -10,7 +10,7 @@ const createReadStream = (pathStr) => {
 
   process.stderr.write(chalk.rgb(0, 0, 0).bgRed.bold(' ERROR '));
   process.stderr.write(' Input file doesn\'t exist. Check if file path is correct.\n');
-  process.exit(-1);
+  process.exit(400);
 }
 
 module.exports = createReadStream;

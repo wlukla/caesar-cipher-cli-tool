@@ -19,7 +19,7 @@ const createTransformStream = (action, shift) => {
           break;
         default:
           console.error('Error');
-          break;
+          process.exit(400);
       }
 
       this.push(processedData);

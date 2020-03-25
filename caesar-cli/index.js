@@ -16,6 +16,11 @@ program
 
 program.parse(process.argv);
 
+process.on('exit', (code) => {
+  process.stdout.write(chalk.white.bgBlack.bold(' EXIT CODE '))
+  process.stdout.write(chalk.keyword('orange')(` ${code}\n`))
+})
+
 const programOpts = program.opts();
 
 if (typeof programOpts.shift === 'undefined') {
@@ -25,7 +30,7 @@ if (typeof programOpts.shift === 'undefined') {
     chalk.white.bgBlackBright.bold(' -s, --shift <shift size> ')
   );
   process.stderr.write(' not specified.\n');
-  process.exit(-1);
+  process.exit(400);
 }
 
 if (typeof programOpts.shift === 'boolean') {
@@ -35,7 +40,7 @@ if (typeof programOpts.shift === 'boolean') {
     chalk.white.bgBlackBright.bold(' -s, --shift <shift size> ')
   );
   process.stderr.write(' argument missing.\n');
-  process.exit(-1);
+  process.exit(400);
 }
 
 if (typeof programOpts.action === 'undefined') {
@@ -45,7 +50,7 @@ if (typeof programOpts.action === 'undefined') {
     chalk.white.bgBlackBright.bold(' -a, --action <encode|decode> ')
   );
   process.stderr.write(' not specified.\n');
-  process.exit(-1);
+  process.exit(400);
 }
 
 if (typeof programOpts.action === 'boolean') {
@@ -55,7 +60,7 @@ if (typeof programOpts.action === 'boolean') {
     chalk.white.bgBlackBright.bold(' -a, --action <encode|decode> ')
   );
   process.stderr.write(' argument missing.\n');
-  process.exit(-1);
+  process.exit(400);
 }
 
 if (programOpts.action !== 'encode' && programOpts.action !== 'decode') {
