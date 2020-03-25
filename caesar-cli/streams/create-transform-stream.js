@@ -7,7 +7,7 @@ const createTransformStream = (action, shift) => {
       super()
     }
 
-    _transform(chunk) {
+    _transform(chunk, enc, done) {
       let processedData;
 
       switch (action) {
@@ -23,6 +23,7 @@ const createTransformStream = (action, shift) => {
       }
 
       this.push(processedData);
+      done();
     }
   };
 
