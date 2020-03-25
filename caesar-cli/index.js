@@ -1,12 +1,10 @@
-const fs = require('fs');
-const stream = require('stream');
-const path = require('path');
 const { program } = require('commander');
 const chalk = require('chalk');
+const { pipeline } = require('stream');
 
-const caesar = require('./caesar');
-
-const log = console.log;
+const createReadStream = require('./streams/create-read-stream');
+const createTransformStream = require('./streams/create-transform-stream');
+const createWriteStream = require('./streams/create-write-stream');
 
 program
   .storeOptionsAsProperties(false)
@@ -21,74 +19,23 @@ program.parse(process.argv);
 const programOpts = program.opts();
 
 if (!programOpts.input) {
-  log(
+  console.log(
     chalk.rgb(0, 0, 0).bgYellowBright.bold(' WARNING '),
     'No input file specified. Using stdin.\nTo add your input file, use',
     chalk.white.bgBlackBright.bold(' -i <input file path> '), '\n',
   );
 }
 if (!programOpts.output) {
-  log(
+  console.log(
     chalk.rgb(0, 0, 0).bgYellowBright.bold(' WARNING '),
     'No output file specified. Using stdout.\nTo add your output file, use',
     chalk.white.bgBlackBright.bold(' -o <output file path> '), '\n',
   );
 };
 
-const Transform = stream.Transform;
-
-class processInput extends Transform {
-  constructor() {
-    super()
-  }
-
-  _transform(chunk) {
-    let processedData;
-
-    switch (programOpts.action) {
-      case 'encode':
-        processedData = caesar.encode(chunk.toString('utf-8'), programOpts.shift);
-        break;
-      case 'decode':
-        processedData = caesar.decode(chunk.toString('utf-8'), programOpts.shift);
-        break;
-      default:
-        console.error('Error');
-        break;
-    }
-
-    this.push(processedData);
-    process.exit();
-  }
-}
-
-const createReadStream = (pathStr) => {
-  if (fs.existsSync(pathStr)) {
-    return fs.createReadStream(pathStr);
-  } else if (!pathStr) {
-    return process.stdin;
-  }
-
-  process.stderr.write(chalk.rgb(0, 0, 0).bgRed.bold(' ERROR '));
-  process.stderr.write(' Input file doesn\'t exist. Check if file path is correct.\n');
-  process.exit(-1);
-}
-
-const createWriteStream = (pathStr) => {
-  if (fs.existsSync(pathStr)) {
-    return fs.createWriteStream(pathStr);
-  } else if (!pathStr) {
-    return process.stdout;
-  }
-
-  process.stderr.write(chalk.rgb(0, 0, 0).bgRed.bold(' ERROR '));
-  process.stderr.write(' Output file doesn\'t exist. Check if file path is correct.\n');
-  process.exit(-1);
-}
-
-stream.pipeline(
+pipeline(
   createReadStream(programOpts.input),
-  new processInput(),
+  createTransformStream(programOpts.action, programOpts.shift),
   createWriteStream(programOpts.output),
   (err) => {
     if (err) {
