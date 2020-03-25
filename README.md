@@ -20,7 +20,7 @@ Then you write string you want to encode/decode and hit enter to see result.
 
 If you want to process files you should copy them into project folder and use following optional arguments:
 - `-i, --input <input file path>` - set path to input file
-- `-o, --output [output file path]'` - set path to output file
+- `-o, --output <output file path>'` - set path to output file
 
 ## Examples
 
