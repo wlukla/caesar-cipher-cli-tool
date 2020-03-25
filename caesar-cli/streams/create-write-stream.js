@@ -1,4 +1,5 @@
 const fs = require('fs');
+const chalk = require('chalk');
 
 const createWriteStream = (pathStr) => {
   if (fs.existsSync(pathStr)) {
