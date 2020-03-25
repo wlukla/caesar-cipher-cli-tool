@@ -15,6 +15,7 @@ Caesar cipher cli tool is made for command line encoding/decoding strings and te
 Run `node caesar-cli` in your command line with following required options:
 - `-s, --shift <shift size>` - set letters shift size
 - `-a, --action <encode|decode>` - set action to perform (only `encode` and `decode` available)
+
 Then you write string you want to encode/decode and hit enter to see result.
 
 If you want to process files you should copy them into project folder and use following optional arguments:
