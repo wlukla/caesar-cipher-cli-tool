@@ -1,6 +1,6 @@
 const { program } = require('commander');
 const chalk = require('chalk');
-const doErrorWarningCheck = require('./utils/error-warning-check');
+const validateOptions = require('./utils/validate-options');
 const { pipeline } = require('stream');
 
 const createReadStream = require('./streams/create-read-stream');
@@ -24,7 +24,7 @@ process.on('exit', (code) => {
 
 const programOpts = program.opts();
 
-doErrorWarningCheck(programOpts);
+validateOptions(programOpts);
 
 const readStream = createReadStream(programOpts.input);
 const transformStream = createTransformStream(
