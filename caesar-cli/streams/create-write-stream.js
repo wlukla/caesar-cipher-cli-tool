@@ -3,7 +3,7 @@ const chalk = require('chalk');
 
 const createWriteStream = (pathStr) => {
   if (fs.existsSync(pathStr)) {
-    return fs.createWriteStream(pathStr);
+    return fs.createWriteStream(pathStr, { flags: 'a' });
   } else if (!pathStr) {
     return process.stdout;
   }
