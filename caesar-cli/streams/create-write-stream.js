@@ -9,8 +9,10 @@ const createWriteStream = (pathStr) => {
   }
 
   process.stderr.write(chalk.rgb(0, 0, 0).bgRed.bold(' ERROR '));
-  process.stderr.write(' Output file doesn\'t exist. Check if file path is correct.\n');
+  process.stderr.write(
+    " Output file doesn't exist. Check if file path is correct.\n",
+  );
   process.exit(400);
-}
+};
 
 module.exports = createWriteStream;

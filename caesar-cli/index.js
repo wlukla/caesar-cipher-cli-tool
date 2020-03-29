@@ -13,32 +13,30 @@ program
   .option('-a, --action [encode|decode]', 'an action encode/decode')
   .option('-i, --input [input file path]', 'an input file')
   .option('-o, --output [output file path]', 'an output file')
-  .parse(process.argv)
+  .parse(process.argv);
 
 program.parse(process.argv);
 
 process.on('exit', (code) => {
-  process.stdout.write(chalk.white.bgBlack.bold(' EXIT CODE '))
-  process.stdout.write(chalk.keyword('orange')(` ${code}\n`))
-})
+  process.stdout.write(chalk.white.bgBlack.bold(' EXIT CODE '));
+  process.stdout.write(chalk.keyword('orange')(` ${code}\n`));
+});
 
 const programOpts = program.opts();
 
 doErrorWarningCheck(programOpts);
 
 const readStream = createReadStream(programOpts.input);
-const transformStream = createTransformStream(programOpts.action, programOpts.shift);
-const writeStream = createWriteStream(programOpts.output)
+const transformStream = createTransformStream(
+  programOpts.action,
+  programOpts.shift,
+);
+const writeStream = createWriteStream(programOpts.output);
 
-pipeline(
-  readStream,
-  transformStream,
-  writeStream,
-  (err) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log('Pipeline succeeded.');
-    }
+pipeline(readStream, transformStream, writeStream, (err) => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log('Pipeline succeeded.');
   }
-)
+});

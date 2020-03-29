@@ -4,7 +4,7 @@ const caesar = require('../utils/caesar');
 const createTransformStream = (action, shift) => {
   class TransformStream extends Transform {
     constructor() {
-      super()
+      super();
     }
 
     _transform(chunk, enc, done) {
@@ -25,9 +25,9 @@ const createTransformStream = (action, shift) => {
       this.push(processedData);
       done();
     }
-  };
+  }
 
   return new TransformStream();
-}
+};
 
 module.exports = createTransformStream;

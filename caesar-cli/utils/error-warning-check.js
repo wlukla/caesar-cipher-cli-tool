@@ -5,7 +5,7 @@ const doErrorWarningCheck = (programOpts) => {
     process.stderr.write(chalk.rgb(0, 0, 0).bgRed.bold(' ERROR '));
     process.stderr.write(' Option ');
     process.stderr.write(
-      chalk.white.bgBlackBright.bold(' -s, --shift <shift size> ')
+      chalk.white.bgBlackBright.bold(' -s, --shift <shift size> '),
     );
     process.stderr.write(' not specified.\n');
     process.exit(400);
@@ -15,7 +15,7 @@ const doErrorWarningCheck = (programOpts) => {
     process.stderr.write(chalk.rgb(0, 0, 0).bgRed.bold(' ERROR '));
     process.stderr.write(' option ');
     process.stderr.write(
-      chalk.white.bgBlackBright.bold(' -s, --shift <shift size> ')
+      chalk.white.bgBlackBright.bold(' -s, --shift <shift size> '),
     );
     process.stderr.write(' argument missing.\n');
     process.exit(400);
@@ -25,7 +25,7 @@ const doErrorWarningCheck = (programOpts) => {
     process.stderr.write(chalk.rgb(0, 0, 0).bgRed.bold(' ERROR '));
     process.stderr.write(' Option ');
     process.stderr.write(
-      chalk.white.bgBlackBright.bold(' -a, --action <encode|decode> ')
+      chalk.white.bgBlackBright.bold(' -a, --action <encode|decode> '),
     );
     process.stderr.write(' not specified.\n');
     process.exit(400);
@@ -35,7 +35,7 @@ const doErrorWarningCheck = (programOpts) => {
     process.stderr.write(chalk.rgb(0, 0, 0).bgRed.bold(' ERROR '));
     process.stderr.write(' option ');
     process.stderr.write(
-      chalk.white.bgBlackBright.bold(' -a, --action <encode|decode> ')
+      chalk.white.bgBlackBright.bold(' -a, --action <encode|decode> '),
     );
     process.stderr.write(' argument missing.\n');
     process.exit(400);
@@ -45,7 +45,7 @@ const doErrorWarningCheck = (programOpts) => {
     process.stderr.write(chalk.rgb(0, 0, 0).bgRed.bold(' ERROR '));
     process.stderr.write(' option ');
     process.stderr.write(
-      chalk.white.bgBlackBright.bold(' -a, --action <encode|decode> ')
+      chalk.white.bgBlackBright.bold(' -a, --action <encode|decode> '),
     );
     process.stderr.write(' has wrong argument.\n');
     process.exit(-1);
@@ -55,7 +55,7 @@ const doErrorWarningCheck = (programOpts) => {
     process.stderr.write(chalk.rgb(0, 0, 0).bgRed.bold(' ERROR '));
     process.stderr.write(' option ');
     process.stderr.write(
-      chalk.white.bgBlackBright.bold(' -i, --input <input file path> ')
+      chalk.white.bgBlackBright.bold(' -i, --input <input file path> '),
     );
     process.stderr.write(' argument missing.\n');
     process.exit(-1);
@@ -65,7 +65,7 @@ const doErrorWarningCheck = (programOpts) => {
     process.stderr.write(chalk.rgb(0, 0, 0).bgRed.bold(' ERROR '));
     process.stderr.write(' option ');
     process.stderr.write(
-      chalk.white.bgBlackBright.bold(' -o, --output <output file path> ')
+      chalk.white.bgBlackBright.bold(' -o, --output <output file path> '),
     );
     process.stderr.write(' argument missing.\n');
     process.exit(-1);
@@ -75,16 +75,18 @@ const doErrorWarningCheck = (programOpts) => {
     console.log(
       chalk.rgb(0, 0, 0).bgYellowBright.bold(' WARNING '),
       'No input file specified. Using stdin.\nTo add your input file, use',
-      chalk.white.bgBlackBright.bold(' -i <input file path> '), '\n',
+      chalk.white.bgBlackBright.bold(' -i <input file path> '),
+      '\n',
     );
   }
   if (!programOpts.output) {
     console.log(
       chalk.rgb(0, 0, 0).bgYellowBright.bold(' WARNING '),
       'No output file specified. Using stdout.\nTo add your output file, use',
-      chalk.white.bgBlackBright.bold(' -o <output file path> '), '\n',
+      chalk.white.bgBlackBright.bold(' -o <output file path> '),
+      '\n',
     );
-  };
-}
+  }
+};
 
 module.exports = doErrorWarningCheck;
