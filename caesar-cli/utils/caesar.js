@@ -1,6 +1,6 @@
 const encode = (text, shift) => {
   let res = '';
-  const key = Number(shift);
+  const key = Number(shift) % 26;
 
   for (let i = 0; i < text.length; i += 1) {
     if (/[a-zA-Z]/.test(text[i])) {
