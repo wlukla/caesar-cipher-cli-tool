@@ -9,7 +9,7 @@ const createWriteStream = require('./streams/create-write-stream');
 
 program
   .storeOptionsAsProperties(false)
-  .option('-s, --shift [shift size]', 'a shift')
+  .option('-s, --shift [shift size]', 'a shift', (val) => parseInt(val))
   .option('-a, --action [encode|decode]', 'an action encode/decode')
   .option('-i, --input [input file path]', 'an input file')
   .option('-o, --output [output file path]', 'an output file')

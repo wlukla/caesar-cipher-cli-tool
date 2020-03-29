@@ -21,6 +21,16 @@ const doErrorWarningCheck = (programOpts) => {
     process.exit(400);
   }
 
+  if (!Number.isInteger(programOpts.shift)) {
+    process.stderr.write(chalk.rgb(0, 0, 0).bgRed.bold(' ERROR '));
+    process.stderr.write(' option ');
+    process.stderr.write(
+      chalk.white.bgBlackBright.bold(' -s, --shift <shift size> '),
+    );
+    process.stderr.write(' should be integer.\n');
+    process.exit(400);
+  }
+
   if (typeof programOpts.action === 'undefined') {
     process.stderr.write(chalk.rgb(0, 0, 0).bgRed.bold(' ERROR '));
     process.stderr.write(' Option ');
